@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 
 DATA = {
@@ -23,8 +24,14 @@ DATA = {
 def recip_info(request):
     name = request.GET.get("name", 'omlet')
     quantity = request.GET.get("servings", 3)
-    recipe = {'a': 5}
-    return render(request, 'calculator/index.html', recipe)
+    data = {
+       'recipe': {
+         'ингредиент1': 'количество1',
+         'ингредиент2': 'количество2',
+       }
+     }
+    #return HttpResponse('Hello')
+    return render(request, 'calculator/index.html', context=data)
 
 # Напишите ваш обработчик. Используйте DATA как источник данных
 # Результат - render(request, 'calculator/index.html', context)
