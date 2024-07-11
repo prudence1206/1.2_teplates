@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-
+from django.template.response import TemplateResponse
 DATA = {
     'omlet': {
         'яйца, шт': 2,
@@ -23,15 +23,15 @@ DATA = {
 
 def recip_info(request):
     name = request.GET.get("name", 'omlet')
-    quantity = request.GET.get("servings", 3)
-    data = {
-       'recipe': {
-         'ингредиент1': 'количество1',
-         'ингредиент2': 'количество2',
-       }
-     }
+    quantity = request.GET.get("servings", 1)
+    recipe={}
+    for ing, am in DATA[name].items():
+        recipe[ing] = am*float(quantity)
+    context = {'recipe': recipe}
+
     #return HttpResponse('Hello')
-    return render(request, 'calculator/index.html', context=data)
+    return render(request, 'calculator/index.html', context)
+    #return TemplateResponse(request, "calculator/index.html", data)
 
 # Напишите ваш обработчик. Используйте DATA как источник данных
 # Результат - render(request, 'calculator/index.html', context)
